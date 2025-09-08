@@ -1,0 +1,2 @@
+
+DELETE FROM services WHERE id BETWEEN 38 AND 54;
