@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { z } from 'zod';
-import { pool } from './db';
 import { authenticateToken } from './middleware/auth';
 
 // Extend Express Request type to include user property
