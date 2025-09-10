@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { z } from 'zod';
 import { authenticateToken } from './middleware/auth';
+import { Pool } from 'pg';
 
 // Extend Express Request type to include user property
 declare global {
