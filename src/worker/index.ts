@@ -9,6 +9,10 @@ import {
   ThemeSchema 
 } from "@/shared/types";
 
+type Env = {
+  [key: string]: string;
+};
+
 const app = new Hono<{ Bindings: Env }>();
 
 // Utility function to generate slug from title
