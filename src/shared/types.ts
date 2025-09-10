@@ -30,12 +30,13 @@ export const PageSchema = z.object({
 export type Page = z.infer<typeof PageSchema>;
 
 export const PageInputSchema = z.object({
-  title: z.string().min(1, "Başlık gereklidir"),
+  title: z.string(),
   content: z.string().optional(),
   meta_description: z.string().optional(),
-  is_published: z.number().default(1),
-  parent_id: z.number().optional(),
-  sort_order: z.number().default(0),
+  is_published: z.boolean(),
+  parent_id: z.number().nullable().optional(),
+  sort_order: z.number().optional(),
+  slug: z.string()  // 🔧 bunu ekle
 });
 export type PageInput = z.infer<typeof PageInputSchema>;
 
@@ -55,12 +56,13 @@ export const BlogPostSchema = z.object({
 export type BlogPost = z.infer<typeof BlogPostSchema>;
 
 export const BlogPostInputSchema = z.object({
-  title: z.string().min(1, "Başlık gereklidir"),
+  title: z.string(),
   content: z.string().optional(),
   excerpt: z.string().optional(),
   featured_image_url: z.string().optional(),
   meta_description: z.string().optional(),
-  is_published: z.number().default(0),
+  is_published: z.boolean(),
+  slug: z.string() // 🔧 bunu da ekle
 });
 export type BlogPostInput = z.infer<typeof BlogPostInputSchema>;
 
@@ -79,12 +81,12 @@ export const ServiceSchema = z.object({
 export type Service = z.infer<typeof ServiceSchema>;
 
 export const ServiceInputSchema = z.object({
-  title: z.string().min(1, "Hizmet adı gereklidir"),
+  title: z.string(),
   description: z.string().optional(),
   icon: z.string().optional(),
   category: z.string().optional(),
-  sort_order: z.number().default(0),
-  is_active: z.number().default(1),
+  sort_order: z.number(),
+  is_active: z.boolean(),
 });
 export type ServiceInput = z.infer<typeof ServiceInputSchema>;
 
@@ -102,9 +104,10 @@ export const ContactSubmissionSchema = z.object({
 export type ContactSubmission = z.infer<typeof ContactSubmissionSchema>;
 
 export const ContactFormSchema = z.object({
-  name: z.string().min(1, "Ad gereklidir"),
-  email: z.string().email("Geçerli bir email adresi giriniz"),
+  name: z.string(),
+  email: z.string().email(),
   subject: z.string().optional(),
-  message: z.string().min(1, "Mesaj gereklidir"),
+  message: z.string(),
 });
 export type ContactForm = z.infer<typeof ContactFormSchema>;
+export const ThemeSchema = z.enum(['turquoise', 'dark', 'light']); // örnek
