@@ -12,10 +12,11 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
   }
 
   try {
-    const user = jwt.verify(token, JWT_SECRET);
+    const user = jwt.verify(token, JWT_SECRET) as JwtPayload & { role?: string }
     req.user = user;
     next();
   } catch (err) {
     return res.status(403).json({ message: 'Invalid or expired token' });
   }
 };
+
