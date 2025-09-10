@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import type { NavigateFunction } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 export function LoginForm() {
@@ -96,3 +95,4 @@ export function LoginForm() {
     </div>
   );
 }
+
