@@ -1,9 +1,9 @@
-name: Deploy Node.js Azure Function App (Windows)
+name: Deploy to Azure Function App
 
 on:
   push:
     branches:
-      - main  # veya senin default branşın
+      - main
 
 jobs:
   build-and-deploy:
@@ -16,21 +16,17 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '18'  # runtime'la uyumlu sürüm
+        node-version: '18'
 
     - name: Install dependencies
       run: npm install
 
-    - name: Build (optional, if you have a build step)
-      run: npm run build
-
     - name: Zip the function app
-      run: |
-        zip -r functionapp.zip .
+      run: zip -r functionapp.zip .
 
     - name: Deploy to Azure Function App
       uses: Azure/functions-action@v1.4.0
       with:
         app-name: renasportal
         package: functionapp.zip
-        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}  # ✅ bu satır olmazsa RBAC moduna geçer
