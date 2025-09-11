@@ -32,9 +32,14 @@ jobs:
           npm run build --if-present
           npm run test --if-present
 
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+
       - name: Deploy to Azure Functions
         uses: Azure/functions-action@v1
         with:
-          app-name: 'renasportal-f4aab9fhgvh6c5c5'  # DÜZELTİLDİ
+          app-name: 'renasportal-f4aab9fhgvh6c5c5'
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
