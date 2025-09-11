@@ -22,13 +22,17 @@ jobs:
       run: npm install
 
     - name: Zip the function app (excluding dev folders)
-      # DEĞİŞİKLİK: node_modules, .git ve .github klasörlerini zip dosyasına dahil etmiyoruz.
-      # Bu, paketi küçültür ve daha temiz bir dağıtım sağlar.
       run: zip -r functionapp.zip . -x "node_modules/*" ".git/*" ".github/*"
 
+    # YENİ ADIM: Azure'da oturum açma
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # GÜNCELLENMİŞ ADIM: publish-profile kaldırıldı
     - name: Deploy to Azure Function App
       uses: Azure/functions-action@v1.4.0
       with:
         app-name: renasportal
         package: functionapp.zip
-        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
