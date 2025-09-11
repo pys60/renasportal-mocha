@@ -33,6 +33,6 @@ jobs:
       - name: Deploy to Azure Function App using Publish Profile
         uses: Azure/functions-action@v1.4.0
         with:
-          app-name: 'renasportal-f4aab9fhgvh6c5c5'
+          app-name: 'renasportal'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
