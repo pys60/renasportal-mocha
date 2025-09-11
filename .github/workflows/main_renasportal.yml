@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'  # Projenin kök dizini
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'
   NODE_VERSION: '22.x'
 
 jobs:
@@ -35,6 +35,6 @@ jobs:
       - name: Deploy to Azure Functions
         uses: Azure/functions-action@v1
         with:
-          app-name: 'renasportal'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DB3E459DEE3D4D45B8F05CA60B2DE19E }}
+          app-name: 'renasportal-f4aab9fhgvh6c5c5'  # DÜZELTİLDİ
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
