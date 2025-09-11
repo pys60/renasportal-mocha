@@ -9,11 +9,6 @@ on:
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'  # Projenin kök dizini
   NODE_VERSION: '22.x'
-  
-with:
-  app-name: 'renasportal'
-  publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISHPROFILE }}
-  package: '.'
 
 jobs:
   build-and-deploy:
@@ -41,6 +36,5 @@ jobs:
         uses: Azure/functions-action@v1
         with:
           app-name: 'renasportal'
-          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DB3E459DEE3D4D45B8F05CA60B2DE19E }}
-
+          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
