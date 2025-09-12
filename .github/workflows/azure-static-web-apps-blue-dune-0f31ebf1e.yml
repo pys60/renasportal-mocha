@@ -12,18 +12,30 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v3
+
+      # Adım 1: Projenin bağımlılıklarını kuruyoruz
       - name: Install Dependencies
         run: npm install
+
+      # Adım 2: Projeyi derliyoruz (build alıyoruz)
       - name: Build Project
         run: npm run build
+
+      # Adım 3: Derlenmiş projeyi Azure'a yüklüyoruz
       - name: Deploy to Azure
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          # DOĞRU SECRET'I KULLANIYORUZ
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }} 
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
+          
+          ###### Proje Yapılandırmanız ######
           app_location: "/"
           api_location: ""
-          output_location: "dist"
+          output_location: "dist" # Projeniz Vite kullandığı için 'dist' olmalı
+          
+          # Derlemeyi biz yaptığımız için bu satır önemli
           skip_app_build: true
+          ####################################
