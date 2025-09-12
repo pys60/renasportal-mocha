@@ -1,4 +1,4 @@
-name: Deploy to Azure Function App
+name: Azure Static Web App CI/CD
 
 on:
   push:
@@ -6,33 +6,36 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  build_and_deploy_job:
     runs-on: ubuntu-latest
-
+    name: Build and Deploy Job
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout the repository
+        uses: actions/checkout@v3
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
+      # Adım 1: Projenin bağımlılıklarını kuruyoruz
+      - name: Install Dependencies
+        run: npm install
 
-    - name: Install dependencies
-      run: npm install
+      # Adım 2: Projeyi derliyoruz (build alıyoruz)
+      - name: Build Project
+        run: npm run build
 
-    - name: Zip the function app (excluding dev folders)
-      run: zip -r functionapp.zip . -x "node_modules/*" ".git/*" ".github/*"
-
-    # DOĞRU ADIM: Azure'da oturum açma
-    - name: 'Login via Azure CLI'
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-    # DOĞRU ADIM: Function App'e dağıtma
-    - name: Deploy to Azure Function App
-      uses: Azure/functions-action@v1
-      with:
-        app-name: renasportal-v2 # YENİ UYGULAMA ADINIZ
-        package: functionapp.zip
+      # Adım 3: Derlenmiş projeyi Azure'a yüklüyoruz
+      - name: Deploy to Azure
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          # Doğru Secret'ı kullanıyoruz
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }} 
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          
+          ###### Proje Yapılandırmanız ######
+          app_location: "/"
+          api_location: ""
+          output_location: "dist" # Projeniz Vite kullandığı için 'dist' olmalı
+          
+          # Derlemeyi biz yaptığımız için bu satır önemli
+          skip_app_build: true
+          ####################################
