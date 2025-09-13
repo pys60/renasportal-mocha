@@ -5,36 +5,50 @@ on:
     branches:
       - main
 
+# Ortam değişkenleri: Değiştirmeniz gereken yerleri buradan kolayca yönetebilirsiniz.
 env:
-  AZURE_WEBAPP_NAME: renasportal    # 3. Adımda verdiğiniz yeni uygulama adı
-  NODE_VERSION: '20.x'
+  AZURE_WEBAPP_NAME: renasportal    # Azure'da oluşturduğunuz Web App'in adı
+  NODE_VERSION: '20.x'                # package.json ile uyumlu Node.js sürümü
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+      # 1. Adım: Proje kodunu GitHub Actions sanal makinesine indirir.
       - name: Checkout the repository
         uses: actions/checkout@v3
 
+      # 2. Adım: Belirtilen Node.js sürümünü kurar.
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
+      # 3. Adım: Gerekli paketleri indirir (npm install) ve projeyi derler (npm run build).
+      # --if-present sayesinde, eğer script yoksa hata vermeden devam eder.
       - name: Install dependencies and build
         run: |
           npm install
           npm run build --if-present
 
+      # 4. Adım: Azure'a güvenli bir şekilde giriş yapar.
+      # Bir önceki adımda oluşturduğumuz AZURE_CREDENTIALS secret'ını kullanır.
       - name: Login to Azure
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      # 5. Adım: Derlenmiş projeyi Azure Web App'e dağıtır.
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         with:
+          # Hangi uygulamaya dağıtım yapılacağını belirtir.
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          package: '.' # Kök dizindeki her şeyi dağıt
-          startup-command: 'npm start' # package.json'daki start komutunu çalıştır
+          
+          # Hangi dosyaların dağıtılacağını belirtir. '.' tüm klasör demektir.
+          package: '.'
+          
+          # Dağıtım sonrası Azure'un uygulamayı başlatmak için çalıştıracağı komut.
+          # Bu, package.json'daki "start" script'inizi çalıştırır.
+          startup-command: 'npm start'
